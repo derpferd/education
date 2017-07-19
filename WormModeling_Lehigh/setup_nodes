@@ -1,0 +1,12 @@
+#!/bin/bash
+
+sudo /usr/local/etc/emulab/mkextrafs.pl /mnt
+user=`whoami`
+sudo chown $user /mnt/local
+cp /share/education/WormModeling_Lehigh/paws_RT.dat.gz /mnt/local
+i=1
+while [ $i -le 8 ]; do
+    ssh -o stricthostkeychecking=no node-$i "/share/education/WormModeling_Lehigh/setup_node1-8"
+    let i=$i+1
+done
+gunzip /mnt/local/paws_RT.dat.gz

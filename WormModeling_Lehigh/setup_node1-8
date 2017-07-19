@@ -1,0 +1,8 @@
+#!/bin/bash
+
+sudo /usr/local/etc/emulab/mkextrafs.pl /mnt
+user=`whoami`
+sudo chown $user /mnt/local
+scp -o stricthostkeychecking=no node-0:/mnt/local/paws_RT.dat.gz /mnt/local
+gunzip /mnt/local/paws_RT.dat.gz
+
