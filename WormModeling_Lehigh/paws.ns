@@ -5,7 +5,7 @@ source tb_compat.tcl
 set lanstr ""
 for {set i 0} {$i < 9} {incr i} {
     set node($i) [$ns node]
-    tb-set-node-os $node($i) Ubuntu1004-STD
+    tb-set-node-os $node($i) Ubuntu-STD
     append lanstr "$node($i) "
 }
 
