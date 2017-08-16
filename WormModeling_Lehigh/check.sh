@@ -1,7 +1,11 @@
 # Two arguments, experiment and project name
+MYPATH=`pwd`
+CPATH="$MYPATH/../common"
+echo "Path $CPATH"
+ssh -o stricthostkeychecking=no node-0.$1.$2 "bash /share/education/WormModeling_Lehigh/setup_nodes"
 ARRAY=( node-0 node-1 node-2 node-3 node-4 node-5 node-6 node-7 node-8 )
 for node in ${ARRAY[*]} ; do
    echo $node
-   ssh -o stricthostkeychecking=no $node.$1.$2 "cd /users/sunshine/education/wormmodel; /usr/bin/perl check.pl"
+   ssh -o stricthostkeychecking=no $node.$1.$2 "cd $CPATH; /usr/bin/perl check-files.pl /mnt/local/paws_RT.dat"
 done
-ssh -o stricthostkeychecking=no node-0.$1.$2 "cd /users/sunshine/education/wormmodel; bash check_make.sh"
+ssh -o stricthostkeychecking=no node-0.$1.$2 "cd $MYPATH; bash make.sh; cd $CPATH; /usr/bin/perl check-files.pl /users/sunshine/paws/log1.dat /users/sunshine/paws/log2.dat /users/sunshine/paws/log3.dat /users/sunshine/paws/log4.dat /users/sunshine/paws/log5.dat /users/sunshine/paws/log6.dat /users/sunshine/paws/log7.dat /users/sunshine/paws/log8.dat"

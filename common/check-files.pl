@@ -1,7 +1,7 @@
-@files=("/usr/local/src/flooder");
 $failed = 0;
-for $file (@files)
+for $file (@ARGV)
 {
+    print "Checking for $file\n";
     open(FE,"perl file_exists.pl $file |") || die "Failed: $!\n";
     while ( <FE> )
     {

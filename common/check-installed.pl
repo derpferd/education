@@ -1,7 +1,7 @@
-@packages=("php","apache2","mysql","perl");
 $failed = 0;
-for $pack (@packages)
+for $pack (@ARGV)
 {
+    print "Checking for $pack\n";
     open(FE,"dpkg -l | grep $pack | wc | ") || die "Failed: $!\n";
     while ( <FE> )
     {
