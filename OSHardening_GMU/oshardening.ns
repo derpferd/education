@@ -5,7 +5,7 @@ source tb_compat.tcl
 set nodeA [$ns node]
 
 #Define the OS image
-tb-set-node-os $nodeA CentOS5
+tb-set-node-os $nodeA Ubuntu-STD
 tb-set-node-startcmd $nodeA "/share/education/OSHardening_GMU/install"
 
 $ns run
