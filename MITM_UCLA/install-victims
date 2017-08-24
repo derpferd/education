@@ -20,8 +20,7 @@ DEBUG=0
 export LAB="MITM_UCLA" # name of this lab
 export SOURCE="ExerciseCommon_UCLA" # common files
 
-export BASE="/users/sunshine/education" # source root
-#export BASE="/share/education" # source root
+export BASE="/share/education" # source root
 export THISLAB="$BASE/$LAB" # lab directory
 export DOWNLOADS="$BASE/$SOURCE"
 
