@@ -1,0 +1,58 @@
+#!/bin/bash
+# installer for mitm lab -- for eve
+
+echo "/mnt/share/education/MITM_UCLA/install-eve" > /tmp/ZUBAZ
+
+ILOG="/var/log/labinstall.log"
+
+DEBUG=1 # don't lockout, don't umount /share
+KEEPLOGS=1
+
+echo "install-eve" > $ILOG 
+
+# set up pathnames
+export LAB="MITM_UCLA" # name of this lab
+export SOURCE="ExerciseCommon_UCLA" # common files
+
+export BASE="/share/education" # source root
+export THISLAB="$BASE/$LAB" # lab directory
+export DOWNLOADS="$BASE/$SOURCE"
+
+# support software
+export UCLA_INSTALL="$DOWNLOADS/scripts"
+
+# load the helper functions
+export FUNCTIONS="$UCLA_INSTALL/functions"
+source $FUNCTIONS
+
+
+echo "Starting installation..." >> $ILOG 2>&1
+# cd into the lab directory
+pushd $THISLAB
+
+# lock out incoming users during customization
+
+
+echo
+echo ">>> Beginning additional configuration of node for '$LAB' lab."
+echo 
+
+ln -s /sbin/ifconfig /usr/bin/ifconfig
+ln -s /usr/sbin/tcpdump /usr/bin/tcpdump
+
+echo "Install ettercrap..."
+
+# install dependencies
+apt-get install debhelper cmake bison flex libgtk2.0-dev libltdl3-dev libncurses-dev libncurses5-dev libnet1-dev libpcap-dev libpcre3-dev libssl-dev libcurl4-openssl-dev ghostscript ettercap-text-only tshark hexedit -y >> $ILOG 2>&1
+
+# install sample etterfilter script
+echo "Copy sample ettercap file..."
+cp $THISLAB/scripts/remote.ef /root/
+
+echo "Install chaosreader..."
+cp $THISLAB/chaosreader/chaosreader /usr/bin/chaosreader
+chmod 755 /usr/bin/chaosreader
+
+echo "Success!"
+
+

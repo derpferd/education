@@ -1,0 +1,88 @@
+#!/bin/bash
+
+# installer for mitm lab -- for victim bob
+
+ILOG="/var/log/labinstall.log"
+
+echo "Installing for BOB..." &>> $ILOG
+
+# set up pathnames
+export LAB="MITM_UCLA" # name of this lab
+export SOURCE="ExerciseCommon_UCLA" # common files
+
+export BASE="/users/sunshine/education" # source root
+#export BASE="/share/education" # source root
+export THISLAB="$BASE/$LAB" # lab directory
+export DOWNLOADS="$BASE/$SOURCE"
+
+# support software
+export INSTALL="$DOWNLOADS/scripts"
+
+
+# load the helper functions
+export FUNCTIONS="$INSTALL/functions"
+source $FUNCTIONS
+
+# cd into the lab directory
+pushd $THISLAB
+
+
+# get the name of this host
+MYHOST=${HOSTNAME%%.*}
+echo "Installing/starting '$MYHOST' specific software..."
+
+echo "Copying scripts..." &>> $ILOG
+
+apt-get install -y apache2 libcgi-pm-perl
+cp $THISLAB/scripts/apache2.conf /etc/apache2/apache2.conf
+a2enmod cgi
+service apache2 restart
+
+# copy and start the movie reader scripts
+pushd /usr/local/bin
+for i in a2start.sh a1start.sh; do
+	killall $i
+	cp $THISLAB/scripts/$i /usr/local/bin/
+	sudo chmod 755 /usr/local/bin/$i
+	# start the scripts
+	./$i &> /dev/null &
+done
+popd
+
+# install telnet perl libs
+apt-get install libnet-telnet-perl -y &>> $ILOG
+
+# install telnet scripts
+killall telstart.sh
+killall telnet.pl
+cp $THISLAB/scripts/telnet.pl /usr/local/bin/
+sudo chmod 755 /usr/local/bin/telnet.pl
+cp $THISLAB/scripts/telstart.sh /usr/local/bin/
+sudo chmod 755 /usr/local/bin/telstart.sh
+
+# start a few telnet scripts
+pushd /usr/local/bin
+for i in `seq 1 5`; do
+	./telstart.sh &> /dev/null &
+done
+popd
+
+echo "Adding users..." &>> $ILOG
+useradd jimbo  &>> $ILOG
+echo "jimbo:goofy76" | chpasswd  &>> $ILOG
+useradd jambo &>> $ILOG
+echo "jambo:minnie77" | chpasswd &>> $ILOG
+useradd jumbo &>> $ILOG
+echo "jumbo:donald78" | chpasswd &>> $ILOG
+
+
+# install stock ticker CGI script
+mkdir /usr/lib/cgi-bin
+chmod 755 /usr/lib/cgi-bin
+cp $THISLAB/scripts/stock.* /usr/lib/cgi-bin/
+sudo chown www-data:www-data /usr/lib/cgi-bin/stock.*
+sudo chmod 755 /usr/lib/cgi-bin/stock.*
+cp $THISLAB/htdocs/bob-index.html /var/www/html/index.html
+
+# share/proj are unmounted in parent script
+echo "Leaving bob-specific installer..."  &>> $ILOG
