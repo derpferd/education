@@ -21,3 +21,9 @@ echo "Checking installed programs"
 ssh -o stricthostkeychecking=no eve.$1.$2 "cd $CPATH; /usr/bin/perl check-installed.pl curl ettercap tshark hexedit"
 echo "Checking files"
 ssh -o stricthostkeychecking=no eve.$1.$2 "cd $CPATH; sudo /usr/bin/perl check-files.pl /root/remote.ef /usr/bin/chaosreader"
+cmd="curl -s alice.$1.$2/cgi-bin/access1.cgi"
+perl ../common/check-output.pl "${cmd}" "END OF LINE"
+cmd="curl -s bob.$1.$2/cgi-bin/stock.cgi"
+perl ../common/check-output.pl "${cmd}" "FrobozzCo"
+
+
