@@ -3,7 +3,7 @@ source tb_compat.tcl
 
 set server [$ns node]
 tb-set-node-os $server Ubuntu-STD
-tb-set-node-startcmd $server "sudo /users/sunshine/education/PathnameAttacks_UCLA/install >& /tmp/labinstall.log"
+tb-set-node-startcmd $server "sudo /share/education/PathnameAttacks_UCLA/install >& /tmp/labinstall.log"
 
 $ns rtproto Static
 $ns run
