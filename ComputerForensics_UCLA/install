@@ -2,6 +2,9 @@
 
 # now uses Debian ONLY -- 8/22/12 -- pahp
 
+DEBUG=0 # set to 1 to DISABLE lockout and share-unmounting for testing
+KEEPLOG=0 # keep or delete install log
+
 echo "Begin node customization."
 echo "Starting 'install'" > /tmp/install.stamp
 
@@ -34,6 +37,12 @@ echo "$FUNCTIONS"
 pwd
 
 source $FUNCTIONS
+
+# lock out incoming users during customization
+if [ $DEBUG -eq 0 ] # do this only if "for reals"
+then
+        NoLogin
+fi
 
 echo
 echo ">>> Beginning additional configuration of node for '$LAB' lab."
@@ -72,3 +81,24 @@ sudo apt-get update
 sudo apt-get install curl john hexedit strings john e2fsprogs e2fslibs-dev -y
 cp -r $THISLAB/e2undel /usr/local/src
 cd /usr/local/src/e2undel; make; cp e2undel /usr/bin
+
+
+echo "Success! Creating success stamp."
+CreateStamp
+
+echo ">>> Configuration complete."
+YesLogin
+
+
+# unmount source files
+if [ $DEBUG -eq 0 ] # do this only if "for reals"
+then
+	$INSTALL/umountshare &
+	$INSTALL/umountproj &
+fi
+
+if [ $KEEPLOG -eq 0 ]
+then
+	rm $ILOG
+	rm /tmp/labinstall.log
+fi

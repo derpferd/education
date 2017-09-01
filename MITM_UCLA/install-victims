@@ -14,7 +14,8 @@ echo "Staring victim installer..." &>> $ILOG
 
 # if DEBUG = 1, won't lockout, won't unmount share
 # and will KEEP the labinstall logs.
-DEBUG=0 
+DEBUG=0
+KEEPLOG=0
 
 # set up pathnames
 export LAB="MITM_UCLA" # name of this lab
@@ -31,6 +32,12 @@ export INSTALL_UCLA="$DOWNLOADS/scripts"
 export FUNCTIONS="$INSTALL_UCLA/functions"
 source $FUNCTIONS
 echo "Loaded helper functions"
+
+# lock out incoming users during customization
+if [ $DEBUG -eq 0 ] # do this only if "for reals"
+then
+	NoLogin
+fi
 
 # cd into the lab directory
 pushd $THISLAB
@@ -86,5 +93,20 @@ CreateStamp
 
 echo ">>> Configuration complete." &>> $ILOG
 
+YesLogin
+
+
+# unmount source files
+if [ $DEBUG -eq 0 ] # do this only if "for reals"
+then
+	$INSTALL/umountshare &
+	$INSTALL/umountproj &
+fi
+
+if [ $KEEPLOG -eq 0 ]
+then
+	rm $ILOG
+	rm /tmp/labinstall.log
+fi
 
 
