@@ -5,6 +5,7 @@
 
 DEBUG=0 # don't lockout, don't umount /share
 KEEPLOGS=0
+ILOG="/tmp/labinstall.log"
 
 # set up pathnames
 export LAB="LinuxDETERIntro_UCLA" # name of this lab
@@ -63,5 +64,4 @@ fi
 if [[ $KEEPLOGS -eq 0 ]]
 then
 	rm $ILOG
-	rm /tmp/labinstall.log
 fi
