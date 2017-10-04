@@ -89,7 +89,7 @@ INT="n"
 
 cd tmp/submit-$ARCHIVE_DATE
 
-CheckDo "memo.cgi" "cp $OPT memo.cgi /usr/lib/cgi-bin/"
+CheckDo "memo.pl" "cp $OPT memo.pl /usr/lib/cgi-bin/"
 CheckDo "/root/submission" "cp $OPT submission /root/"
 
 Cleanup
