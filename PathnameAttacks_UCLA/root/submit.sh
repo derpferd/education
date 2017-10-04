@@ -9,7 +9,7 @@ echo ""
 echo "'$OUTFILE' in the current directory."
 echo ""
 echo "This file will contain:"
-echo "	* /usr/lib/cgi-bin/memo.cgi"
+echo "	* /usr/lib/cgi-bin/memo.pl"
 echo "	* /root/submission"
 echo "   ... which should contain:"
 echo "	      exploit.sh"
@@ -19,7 +19,7 @@ echo ""
 echo "The script restore.sh will restore these files."
 
 sudo mkdir $TMP
-sudo cp -a /usr/lib/cgi-bin/memo.cgi $TMP
+sudo cp -a /usr/lib/cgi-bin/memo.pl $TMP
 sudo cp -ar /root/submission $TMP
 
 sudo tar -czf $OUTFILE $TMP
