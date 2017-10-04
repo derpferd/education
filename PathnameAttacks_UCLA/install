@@ -46,7 +46,7 @@ echo "installing software"
 ####################################
 
 apt-get update
-apt-get install elinks links wget curl tcpdump -y
+apt-get install elinks links wget curl tcpdump hexedit -y
 
 DF_TMP=$DEBIAN_FRONTEND # save this var
 export DEBIAN_FRONTEND=noninteractive # allow install without password
@@ -59,13 +59,14 @@ debconf-set-selections <<< 'mysql-server-5.1 mysql-server/root_password_again pa
 apt-get install lamp-server^ -y &>> $ILOG
 cat $THISLAB/confs/apache2.conf >> /etc/apache2/apache2.conf
 a2enmod cgid
+/etc/init.d/apache2 restart
 
 # PHP5 is automatically installed and configured.
 
 export DEBIAN_FRONTEND=$DF_TMP # restore default
 
 ####################################
-# memo.cgi installation
+# accounts and memo homedir setup
 ####################################
 # Set up user accounts for Memo
 
@@ -86,19 +87,32 @@ for i in *
 do
 	  chown $i:$i -R /home/$i
 done
-popd
+popd # leaving home
+
+########################################
+# install the CGI programs
+########################################
 
 echo "Installing memo.cgi" >> $ILOG
-mkdir /usr/lib/cgi-bin
-for f in memo.cgi demo.cgi
+
+mkdir -p /usr/lib/cgi-bin
+pushd /usr/lib/cgi-bin
+
+for f in memo.pl demo.cgi
 do
-	cp $THISLAB/memo/$f /usr/lib/cgi-bin/
-	chown root:root /usr/lib/cgi-bin/$f
-	chmod go+rx /usr/lib/cgi-bin/$f
+	cp $THISLAB/memo/$f .
+	chown root:root $f
+	chmod go+rx $f
 done
 
-# make memo.cgi SUID root
-chmod u+s /usr/lib/cgi-bin/memo.cgi
+# SUID-root scripts don't work on Apache any more, and suid-perl
+# is no longer part of Ubuntu, so we need to use a suid root
+# C-wrapper to launch the memo.cgi program SUID root.
+$DOWNLOADS/mkcwrapper.sh /usr/lib/cgi-bin/memo.pl memo.cgi
+chown root:root memo.cgi
+chmod u+s memo.cgi
+
+popd # leaving /usr/lib/cgi-bin
 
 ####################################
 # root level web docs
