@@ -91,7 +91,7 @@ INT="n"
 
 cd tmp/submit*
 
-CheckDo "FCCU.php" "cp $OPT FCCU.php /var/www/html/"
+CheckDo "FCCU.php" "cp $OPT FCCU.php /usr/lib/cgi-bin/"
 CheckDo "/root/submission" "cp $OPT submission /root/"
 
 Cleanup

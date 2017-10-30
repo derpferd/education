@@ -16,7 +16,7 @@ echo ""
 echo "The script restore.sh will restore these files."
 
 sudo mkdir $TMP
-sudo cp -a /var/www/html/FCCU.php $TMP
+sudo cp -a /usr/lib/cgi-bin/FCCU.php $TMP
 sudo cp -ar /root/submission $TMP
 
-sudo tar -czf $USER-exploits-$DATE.tar.gz $TMP
+sudo tar -czf $USER-sql-$DATE.tar.gz $TMP
