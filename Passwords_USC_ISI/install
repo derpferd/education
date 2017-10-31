@@ -1,0 +1,2 @@
+sudo apt-get install john
+sudo cp /share/education/Passwords_USC_ISI/passwords /var/passwords
