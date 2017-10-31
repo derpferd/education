@@ -1,3 +1,4 @@
+sudo apt-get install -y socat
 cp -r /share/education/common/snoopy /usr/local/src/snoopy
 cd /usr/local/src/snoopy
 sudo ./configure

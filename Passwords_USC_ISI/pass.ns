@@ -6,7 +6,7 @@ set pass [$ns node]
 #Define the OS image
 tb-set-node-os $pass Ubuntu-STD   
 
-tb-set-node-startcmd $pass "sudo /share/education/Passwords_USC_ISI/install >& /tmp/labinstall.log;  sudo bash /share/education/common/logsnoopy.sh >& /var/log/snoopy.install"
+tb-set-node-startcmd $pass "sudo /share/education/Passwords_USC_ISI/install >& ~/pass.labinstall.log;  sudo bash /share/education/common/logsnoopy.sh >& ~/snoopy.install.log"
 
 $ns rtproto Static
 $ns run
